@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { View, Image, ScrollView, StyleSheet, TouchableOpacity, Text, FlatList, Pressable, ToastAndroid } from 'react-native';
 import { ApiCall } from "../../Services/API/apiCalls";
 import moment from "moment";
+import { BASE_URL } from "../../Services/API/ApiConstants/ApiConstants";
 
 var prevDate = '';
 
@@ -10,13 +11,12 @@ export default class EventsList extends Component{
         super(props);
         this.state= {
             rosterData: [],
-            prevDate: '',
             refreshingData: false
         }
     }
 
     componentDidMount() {
-        this.getRosterData();
+        this.getRosterData(BASE_URL);
     }
 
     getRosterData=async()=> {
@@ -33,8 +33,6 @@ export default class EventsList extends Component{
                 rosterData: data,
                 refreshingData: false
             })
-        }else{
-            
         }
     }
 
@@ -147,16 +145,23 @@ export default class EventsList extends Component{
     }
 
     render(){
-        return(
-            <FlatList
-                data= {this.state.rosterData}
-                renderItem={({item, index})=>this.renderItem(item, index)}
-                keyExtractor={item => item.id}
-                extraData={this.state.rosterData}
-                onRefresh={()=> this.onRefresh()}
-                refreshing={this.state.refreshingData}
-            />
-        )
+        if(this.state.rosterData.length <1){
+            return(
+                <View style={{width:'100%', height:'100%', justifyContent:'center', alignItems:'center'}}>
+                    <Text>fetching roster data...</Text>
+                </View>
+            )
+        }else{
+            return(
+                <FlatList
+                    data= {this.state.rosterData}
+                    renderItem={({item, index})=>this.renderItem(item, index)}
+                    extraData={this.state.rosterData}
+                    onRefresh={()=> this.onRefresh()}
+                    refreshing={this.state.refreshingData}
+                />
+            )
+        }
     }
 }
 

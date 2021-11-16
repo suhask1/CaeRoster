@@ -1,0 +1,1 @@
+export const BASE_URL='https://rosterbuster.aero/wp-content/uploads/dummy-response.json';

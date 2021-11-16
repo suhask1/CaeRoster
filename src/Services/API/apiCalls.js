@@ -2,22 +2,19 @@ import React from "react";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import NetInfo from "@react-native-community/netinfo";
 
-export const ApiCall= async() => {
+export const ApiCall= async(url) => {
     var isConnected = false;
     await NetInfo.fetch().then(state => {
-        console.log("Connection type", state.type);
-        console.log("Is connected?", state.isConnected);
         isConnected = state.isConnected;
     });
     if(!isConnected){
-        return fetch('https://rosterbuster.aero/wp-content/uploads/dummy-response.json')
+        return fetch(url)
         .then((response) => response.json())
         .then(async(json) => {
             await AsyncStorage.setItem('rosterData', JSON.stringify(json))
             return json;    
         })    
-        .catch((error) => {      
-            console.error(error);   
+        .catch((error) => {        
             return false; 
         });
     }else{
