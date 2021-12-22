@@ -7,7 +7,7 @@ export const ApiCall= async(url) => {
     await NetInfo.fetch().then(state => {
         isConnected = state.isConnected;
     });
-    if(!isConnected){
+    if(isConnected){
         return fetch(url)
         .then((response) => response.json())
         .then(async(json) => {

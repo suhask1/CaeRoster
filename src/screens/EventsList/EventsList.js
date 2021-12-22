@@ -19,8 +19,8 @@ export default class EventsList extends Component{
         this.getRosterData(BASE_URL);
     }
 
-    getRosterData=async()=> {
-        var data = await ApiCall();
+    getRosterData=async(url)=> {
+        var data = await ApiCall(url);
         if(data){
             data.sort((a,b)=>{
                 let currDate = Date(a.Date);
